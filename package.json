@@ -13,6 +13,7 @@
     "clean": "rimraf .next node_modules",
     "lint": "next lint",
     "generate": "gqty generate",
+    "codegen": "graphql-codegen",
     "possibletypes": "faust generatePossibleTypes",
     "wpe-build": "next build"
   },
@@ -22,6 +23,8 @@
     "@faustjs/next": "^0.15.10",
     "@faustwp/cli": "^0.2.12",
     "@faustwp/core": "^0.2.11",
+    "@graphql-codegen/cli": "^3.3.1",
+    "@graphql-codegen/client-preset": "^3.0.1",
     "graphql": "^16.6.0",
     "next": "^12.2.4",
     "normalize.css": "^8.0.1",
