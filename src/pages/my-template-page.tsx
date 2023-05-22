@@ -1,5 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import Head from "next/head";
+import { Footer, Header, Hero } from "components";
 import EntryHeader from "../components/entry-header";
 import { getNextStaticProps } from "@faustwp/core";
 import { GetStaticPropsContext } from "next";
@@ -21,15 +22,20 @@ export default function Page(props) {
 
   return (
     <>
+      <Header title={siteTitle} description={siteDescription} />
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <main className="container">
-        <EntryHeader title="Next.js Page Example" />
-        <div className="container">
-          <ContentWrapper content={content} />
+      <Hero title="New Faust Page" />
+      <main className="content content-single">
+        <div className="wrap">
+          <EntryHeader title="Next.js Page Example" />
+          <div className="container">
+            <ContentWrapper content={content} />
+          </div>
         </div>
       </main>
+      <Footer copyrightHolder={siteTitle} />
     </>
   );
 }
@@ -69,14 +75,14 @@ Page.variables = () => {
 };
 
 export async function getStaticProps(ctx: GetStaticPropsContext) {
-    console.debug(
-      await getNextStaticProps(ctx, {
-        Page,
-        revalidate: 10,
-      })
-    );
+  console.debug(
+    await getNextStaticProps(ctx, {
+      Page,
+      revalidate: 10,
+    })
+  );
   return getNextStaticProps(ctx, {
     Page,
     revalidate: 10,
-  })
+  });
 }

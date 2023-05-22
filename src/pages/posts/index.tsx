@@ -47,7 +47,7 @@ export default function Page() {
           postTitleLevel="h3"
           id={styles.post_list}
         />
-        <Pagination pageInfo={posts.pageInfo} basePath="/posts" />
+        <Pagination pageInfo={posts.pageInfo as any} basePath="/posts" />
       </main>
 
       <Footer copyrightHolder={generalSettings.title} />
