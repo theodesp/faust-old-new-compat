@@ -10,10 +10,10 @@ import ContentWrapper from "components/ContentWrapper";
  * Next.js file based page example with Faust helpers.
  */
 export default function Page(props) {
-  const { data } = useQuery(Page.query as any, {
-    variables: Page.variables(),
+  const { data, loading } = useQuery(Page.query as any, {
+    variables: props.__PAGE_VARIABLES__,
   });
-  if (props.loading) {
+  if (loading) {
     return null;
   }
   const { title: siteTitle, description: siteDescription } =
@@ -75,12 +75,12 @@ Page.variables = () => {
 };
 
 export async function getStaticProps(ctx: GetStaticPropsContext) {
-  console.debug(
+  console.debug(JSON.stringify(
     await getNextStaticProps(ctx, {
       Page,
       revalidate: 10,
     })
-  );
+  ));
   return getNextStaticProps(ctx, {
     Page,
     revalidate: 10,
