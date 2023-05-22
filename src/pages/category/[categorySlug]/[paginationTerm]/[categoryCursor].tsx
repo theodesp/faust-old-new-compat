@@ -16,6 +16,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return getNextStaticProps(context, {
     Page,
     client,
+    revalidate: 10
   });
 }
 
