@@ -1,7 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
 import Head from "next/head";
 import { Footer, Header, Hero } from "components";
-import EntryHeader from "../components/entry-header";
+import EntryHeader from "components/entry-header";
 import { getNextStaticProps } from "@faustwp/core";
 import { GetStaticPropsContext } from "next";
 import ContentWrapper from "components/ContentWrapper";
@@ -13,6 +13,7 @@ export default function Page(props) {
   const { data, loading } = useQuery(Page.query as any, {
     variables: props.__PAGE_VARIABLES__,
   });
+
   if (loading) {
     return null;
   }
@@ -75,12 +76,13 @@ Page.variables = () => {
 };
 
 export async function getStaticProps(ctx: GetStaticPropsContext) {
-  console.debug(JSON.stringify(
-    await getNextStaticProps(ctx, {
-      Page,
-      revalidate: 10,
-    })
-  ));
+  // console.debug(JSON.stringify(
+  //   await getNextStaticProps(ctx, {
+  //     Page,
+  //     revalidate: 10,
+  //   })
+  // ));
+
   return getNextStaticProps(ctx, {
     Page,
     revalidate: 10,
