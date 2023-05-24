@@ -2,7 +2,7 @@ import Head from "next/head";
 import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { Footer, Header, Hero } from "components";
-import { getNextStaticProps } from "@faustwp/core";
+import { getApolloClient, getNextStaticProps } from "@faustwp/core";
 import ContentWrapper from "components/ContentWrapper";
 import EntryHeader from "components/entry-header";
 
@@ -65,9 +65,20 @@ Page.variables = () => {
   return {};
 };
 
-export async function getStaticProps(context) {
-  return getNextStaticProps(context, {
-    Page,
-    revalidate: 10
-  });
-}
+export async function getStaticProps(ctx: GetStaticPropsContext) {
+    const {data} = await getApolloClient().query({query: Page.query, variables: Page.variables()});
+    console.debug(JSON.stringify(await getNextStaticProps(ctx, {
+      Page: Page as any,
+      props: {
+        data
+      },
+      revalidate: 10,
+    })));
+    return getNextStaticProps(ctx, {
+      Page: Page as any,
+      props: {
+        data
+      },
+      revalidate: 10,
+    });
+  }
