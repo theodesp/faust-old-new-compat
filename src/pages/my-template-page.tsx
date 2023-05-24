@@ -2,7 +2,7 @@ import { useQuery, gql } from "@apollo/client";
 import Head from "next/head";
 import { Footer, Header, Hero } from "components";
 import EntryHeader from "components/entry-header";
-import { getNextStaticProps } from "@faustwp/core";
+import { getApolloClient, getNextStaticProps } from "@faustwp/core";
 import { GetStaticPropsContext } from "next";
 import ContentWrapper from "components/ContentWrapper";
 
@@ -10,16 +10,12 @@ import ContentWrapper from "components/ContentWrapper";
  * Next.js file based page example with Faust helpers.
  */
 export default function Page(props) {
-  const { data, loading } = useQuery(Page.query as any, {
-    variables: props.__PAGE_VARIABLES__,
-  });
-
-  if (loading) {
+  if (props.loading) {
     return null;
   }
   const { title: siteTitle, description: siteDescription } =
-    data?.generalSettings ?? { title: "", description: "description" };
-  const { content } = data?.page ?? { title: "" };
+  props.data?.generalSettings ?? { title: "", description: "description" };
+  const { content } = props.data?.page ?? { title: "" };
 
   return (
     <>
@@ -41,7 +37,7 @@ export default function Page(props) {
   );
 }
 
-Page.query = gql`
+const q = gql`
   query GetExamplePage($uri: ID!) {
     generalSettings {
       title
@@ -69,22 +65,19 @@ Page.query = gql`
   }
 `;
 
-Page.variables = () => {
+const variables = () => {
   return {
     uri: "/my-template-page",
   };
 };
 
 export async function getStaticProps(ctx: GetStaticPropsContext) {
-  // console.debug(JSON.stringify(
-  //   await getNextStaticProps(ctx, {
-  //     Page,
-  //     revalidate: 10,
-  //   })
-  // ));
-
+  const {data} = await getApolloClient().query({query: q, variables: variables()});
   return getNextStaticProps(ctx, {
-    Page,
+    Page: Page as any,
+    props: {
+      data
+    },
     revalidate: 10,
   });
 }
